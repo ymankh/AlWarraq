@@ -1,0 +1,128 @@
+﻿@using AlWarraq.Models
+@model IEnumerable<AlWarraq.Models.Book>
+
+@{
+    ViewBag.Title = "Index";
+    var categories = ViewBag.Categories as List<Category>;
+}
+<div class="container">
+    <form method="get" class="p-3">
+        <div class="row g-3">
+            <!-- Filter by Title -->
+            <div class="col-md-4">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="Enter book title">
+            </div>
+
+            <!-- Filter by Author -->
+            <div class="col-md-4">
+                <label for="author" class="form-label">Author</label>
+                <input type="text" class="form-control" id="author" name="author" placeholder="Enter author name">
+            </div>
+
+
+            <!-- Filter by Price Range -->
+            <div class="col-md-4">
+                <label for="priceRange" class="form-label">Price Range</label>
+                <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input style="margin:0" type="number" class="form-control input-group-text" id="minPrice" name="minPrice" placeholder="Min" aria-label="Min Price">
+                    <span class="input-group-text">-</span>
+                    <input style="margin:0" type="number" class="form-control" id="maxPrice" name="maxPrice" placeholder="Max" aria-label="Max Price">
+                </div>
+            </div>
+
+            <!-- Filter by Categories -->
+            <div class="col-md-4">
+                <label for="category" class="form-label">Category</label>
+                <select class="form-select" id="category" name="categoryId">
+                    <option value="">All Categories</option>
+                    @foreach (var category in categories)
+                    {
+                        <option value="@category.CategoryId">@category.Name</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Filter Button -->
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        @foreach (var book in Model)
+        {
+            <div class="col-md-3">
+                <div class="product-item">
+                    <figure class="product-style">
+                        <img src="@Url.Content(book.ImageUrl)" alt="Books" class="product-item">
+                        <button type="button" class="add-to-cart" data-id="@book.BookId" data-product-tile="add-to-cart">
+                            Add to
+                            Cart
+                        </button>
+                    </figure>
+                    <figcaption>
+                        <h3>@book.Title</h3>
+                        <span>@book.Author</span>
+                        <div class="item-price">$ @book.Price</div>
+                    </figcaption>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (ViewBag.isAuthenticated)
+    {
+        <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var buttons = document.querySelectorAll('.add-to-cart');
+
+        buttons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var productId = this.getAttribute('data-id');
+
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '@Url.Action("AddToCart", "Cart")', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            var response = JSON.parse(xhr.responseText);
+                            if (response.success) {
+                                Toastify({
+                                    text: "Item has been added to the cart",
+                                    duration: 3000
+                                }).showToast();
+                            } else {
+                                alert("There was an error adding the item to the cart.");
+                            }
+                        } else {
+                            alert("There was an error with the request.");
+                        }
+                    }
+                };
+                xhr.send('bookId=' + encodeURIComponent(productId));
+            });
+        });
+    });
+        </script>
+    }
+    else
+    {
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var buttons = document.querySelectorAll(".add-to-cart");
+
+            buttons.forEach(function (button) {
+                button.addEventListener("click", function () {
+                    window.location.href = "@Url.Action("Login", "Account")"
+                });
+            });
+        });
+        </script>
+    }
+</div>

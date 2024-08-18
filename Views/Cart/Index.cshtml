@@ -1,0 +1,67 @@
+﻿@model List<AlWarraq.Models.CartItem>
+@{
+    ViewBag.Title = "title";
+}
+
+@if (Model.Any())
+{
+    <div class="container my-5">
+        <h2 class="mb-4 text-center">Your Cart</h2>
+
+        <!-- Cart Items List -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Single Cart Item -->
+                @foreach (var cartItem in Model)
+                {
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="@cartItem.Book.ImageUrl" class="img-fluid rounded-start" alt="Item Image">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body d-flex flex-column">
+                                    <h3 class="card-title">@cartItem.Book.Title</h3>
+                                    <p class="card-text">$ @cartItem.Book.Price</p>
+                                    <div class="mt-auto">
+                                        <div class="mb-2 input-group" style="width: 180px;">
+                                            <!-- Quantity Controls -->
+                                            <a href="@Url.Action("MinusQuantity", "Cart", new {id=cartItem.CartItemId})" style="margin-top:0;" class="btn btn-outline-secondary btn-sm me-2" type="button">-</a>
+                                            <input type="number" class="form-control text-center" style="margin:0;" value="@cartItem.Quantity" min="1" disabled>
+                                            <a href="@Url.Action("AddQuantity", "Cart", new {id=cartItem.CartItemId})" style="margin-top:0;" class="btn btn-outline-secondary btn-sm ms-2" type="button">+</a>
+                                        </div>
+                                        <!-- Delete Button -->
+                                        <button class="btn btn-danger btn-sm" type="button">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <!-- Repeat the above block for each cart item -->
+                <!-- Cart Summary -->
+                <div class="card mt-4">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Cart Summary</h5>
+                        <p class="card-text">Total Items: <span id="total-items">@Model.Sum(item => item.Quantity)</span></p>
+                        <p class="card-text">Total Price: $ <span id="total-price">@Model.Sum(item => item.Book.Price * item.Quantity)</span></p>
+                        <button class="btn btn-success btn-lg" type="button">Proceed to Checkout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container my-5 text-center">
+        <h2 class="mb-4">Your Cart</h2>
+        <div class="alert alert-warning" role="alert">
+            Your cart is currently empty.
+        </div>
+        <p class="mb-4">It looks like you haven't added any items to your cart yet.</p>
+        <a href="" class="btn btn-primary btn-lg">Continue Shopping</a>
+    </div>
+}
+
+

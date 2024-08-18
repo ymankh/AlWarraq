@@ -1,0 +1,38 @@
+﻿@using AlWarraq.Models
+@model AlWarraq.Models.Book
+
+@{
+    ViewBag.Title = "Details";
+}
+<div class="container">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="@Url.Content(Model.ImageUrl)" alt="@Model.Title" class="img-fluid">
+            </div>
+            <div class="col-md-8">
+                <h1>@Model.Title</h1>
+                <p><strong>Author:</strong> @Model.Author</p>
+                <p><strong>ISBN:</strong> @Model.ISBN</p>
+                <p><strong>Price:</strong> $@Model.Price</p>
+                <p><strong>In Stock:</strong> @Model.StockQuantity</p>
+                <p><strong>Description:</strong></p>
+                <p>@Model.Description</p>
+
+                <h4>Categories</h4>
+                <ul>
+                    @foreach (var category in Model.BookCategories)
+                    {
+                        <li>@category.Category.Name</li>
+                    }
+                </ul>
+
+                <a href="@Url.Action("AddToCart", "Cart", new { id = Model.BookId })" class="btn btn-primary">Add to Cart</a>
+                <a href="@Url.Action("Index", "Books")" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+
+
+</div>
