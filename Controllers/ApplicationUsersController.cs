@@ -1,7 +1,12 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Migrations;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Mvc;
+using AlWarraq.Migrations;
 using AlWarraq.Models;
 using Microsoft.AspNet.Identity;
 
@@ -18,7 +23,7 @@ namespace AlWarraq.Controllers
         }
 
         // GET: ApplicationUsers
-        public ActionResult Profile()
+        public new ActionResult Profile()
         {
             var userId = User.Identity.GetUserId();
             var user = db.Users.SingleOrDefault(u => u.Id == userId);
@@ -30,6 +35,39 @@ namespace AlWarraq.Controllers
 
             return View(user);
         }
+
+        [HttpPost]
+        public new ActionResult Profile(string fullName, string email, string password, HttpPostedFileBase profileImage)
+        {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            if (!string.IsNullOrEmpty(fullName))
+                user.FullName = fullName;
+            var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase);
+            if (!string.IsNullOrEmpty(email) && emailRegex.IsMatch(email))
+                user.Email = email;
+
+            var passwordHasher = new PasswordHasher();
+            if (string.IsNullOrEmpty(password))
+                user.PasswordHash = passwordHasher.HashPassword(password);
+
+            db.Users.AddOrUpdate(user);
+            db.SaveChanges();
+            if (profileImage == null || profileImage.ContentLength <= 0) return RedirectToAction("Profile");
+            var fileName = Path.GetFileName(profileImage.FileName);
+            var path = Path.Combine(Server.MapPath("~/Uploads/ProfileImages"), fileName);
+            if (!Directory.Exists(Server.MapPath("~/Uploads/ProfileImages")))
+            {
+                Directory.CreateDirectory(Server.MapPath("~/Uploads/ProfileImages"));
+            }
+            profileImage.SaveAs(path);
+            var relativePath = "/Uploads/ProfileImages/" + fileName;
+            user.ProfileImage = relativePath;
+            db.Users.AddOrUpdate(user);
+            db.SaveChanges();
+            return RedirectToAction("Profile");
+        }
+
         // GET: ApplicationUsers/Details/5
         public ActionResult Details(string id)
         {

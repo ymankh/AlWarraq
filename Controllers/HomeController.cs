@@ -19,20 +19,18 @@ namespace AlWarraq.Controllers
             ViewBag.isAuthenticated = isAuthenticated;
             ViewBag.Categorys = db.Categories.ToList();
             var books = db.Books;
-            if (User.Identity.IsAuthenticated)
+            if (!User.Identity.IsAuthenticated) return View(books.ToList());
+            var userId = User.Identity.GetUserId();
+            var cart = db.Carts.Include(c => c.CartItems.Select(ci => ci.Book)).FirstOrDefault(c => c.UserId == userId);
+            if (cart == null)
             {
-                var userId = User.Identity.GetUserId();
-                var cart = db.Carts.Include(c => c.CartItems.Select(ci => ci.Book)).FirstOrDefault(c => c.UserId == userId);
-                if (cart == null)
+                cart = new Cart
                 {
-                    cart = new Cart
-                    {
-                        UserId = userId
-                    };
-                    db.Carts.Add(cart);
-                }
-                @ViewBag.itemsCount = cart.TotalAmount;
+                    UserId = userId
+                };
+                db.Carts.Add(cart);
             }
+            @ViewBag.itemsCount = cart.TotalAmount;
             return View(books.ToList());
         }
 
@@ -51,6 +49,7 @@ namespace AlWarraq.Controllers
         }
         protected override void Dispose(bool disposing)
         {
+           
             if (disposing)
             {
                 db.Dispose();
