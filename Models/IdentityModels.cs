@@ -60,5 +60,6 @@ namespace AlWarraq.Models
                 .WithMany(c => c.BookCategories)
                 .HasForeignKey(bc => bc.CategoryId);
         }
+
     }
 }

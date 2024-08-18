@@ -25,8 +25,10 @@ namespace AlWarraq.Controllers
                 var cart = db.Carts.Include(c => c.CartItems.Select(ci => ci.Book)).FirstOrDefault(c => c.UserId == userId);
                 if (cart == null)
                 {
-                    cart = new Cart();
-                    cart.UserId = userId;
+                    cart = new Cart
+                    {
+                        UserId = userId
+                    };
                     db.Carts.Add(cart);
                 }
                 @ViewBag.itemsCount = cart.TotalAmount;

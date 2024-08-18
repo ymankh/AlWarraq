@@ -170,6 +170,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ApplicationUsersController.cs" />
     <Compile Include="Controllers\BookCategoriesController.cs" />
     <Compile Include="Controllers\BooksController.cs" />
     <Compile Include="Controllers\CartController.cs" />
@@ -285,6 +286,23 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\Books\14142_244027075.jpg" />
+    <Content Include="Images\Books\186837_244737451.jpg" />
+    <Content Include="Images\Books\208916_245328662.jpg" />
+    <Content Include="Images\Books\241912759.jpg" />
+    <Content Include="Images\Books\242049307.jpg" />
+    <Content Include="Images\Books\244445399.jpg" />
+    <Content Include="Images\Books\30239554_244843586.jpg" />
+    <Content Include="Images\Books\33141897_245005991.png" />
+    <Content Include="Images\Books\39712323_240031007.jpg" />
+    <Content Include="Images\Books\485894_245639539.jpg" />
+    <Content Include="Images\Books\51893_245154815.jpg" />
+    <Content Include="Images\Books\57188438_244214661.jpg" />
+    <Content Include="Images\Books\85120246_244621333.jpg" />
+    <Content Include="Images\Books\87346_240203191.jpg" />
+    <Content Include="Images\Books\animal-farm-9781839642395_lg_245857062.jpg" />
+    <Content Include="Images\Books\olfa al2dby dimshk 01_245515286.jpg" />
+    <Content Include="Images\Books\xxx_243155257.jpg" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -295,6 +313,7 @@
     <Content Include="assets\icomoon\fonts\icomoon.ttf" />
     <Content Include="assets\icomoon\fonts\icomoon.woff" />
     <Content Include="assets\icomoon\selection.json" />
+    <Content Include="Images\Books\CK-3_242558636.webp" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
@@ -361,6 +380,12 @@
     <Content Include="Views\Shop\Details.cshtml" />
     <Content Include="Views\Shop\Edit.cshtml" />
     <Content Include="Views\Shop\Index.cshtml" />
+    <Content Include="Views\ApplicationUsers\Create.cshtml" />
+    <Content Include="Views\ApplicationUsers\Delete.cshtml" />
+    <Content Include="Views\ApplicationUsers\Details.cshtml" />
+    <Content Include="Views\ApplicationUsers\Edit.cshtml" />
+    <Content Include="Views\ApplicationUsers\Index.cshtml" />
+    <Content Include="Views\ApplicationUsers\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
